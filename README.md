@@ -37,6 +37,72 @@ first. One failure — a card decline — is handled in full, with compensation.
 
 ---
 
+## System Architecture
+
+```mermaid
+flowchart TD
+    subgraph Clients["Clients & Interfaces"]
+        HumanUI["Human Shopper (Browser UI / Live SSE Console)"]
+        AIBuyer["Autonomous AI Buyer (MCP Agent / Protocol Client)"]
+    end
+
+    subgraph Entrypoints["Discovery & API Layer (server.js)"]
+        WellKnown["/.well-known/agent-commerce.json<br/>(Discovery Manifest)"]
+        MCPEndpoint["/mcp<br/>(JSON-RPC 2.0 MCP Endpoint)"]
+        RESTAPI["REST API<br/>(/api/catalog, /api/checkout, /api/policy)"]
+        AgentRouter["Deterministic Intent Agent<br/>(src/agent.js)"]
+    end
+
+    subgraph GrowthEngine["Growth & Revenue Engine (src/growth.js)"]
+        Affinity["Market-Basket Affinity Matrix"]
+        Campaigns["Campaign Orchestrator"]
+        QuoteEngine["Quote & Upsell Generator"]
+    end
+
+    subgraph MoneyRail["Bounded Money Rail (src/checkout.js)"]
+        CartPricer["Source Data Cart Pricer"]
+        PolicyEngine["17-Rule Policy Engine (src/policy.js)<br/>[Verdicts: allow | review | deny]"]
+        Mandates["HMAC-SHA256 Mandate Verifier<br/>(Caps, Expiry, Nonces)"]
+    end
+
+    subgraph LedgerSystem["Audit & Ledger (src/ledger.js)"]
+        HashLedger["Hash-Chained Append-Only Ledger"]
+        TamperVerify["Tamper Detection Engine<br/>(/api/audit/verify)"]
+    end
+
+    subgraph GatewayLayer["Payment & Store Infrastructure"]
+        RazorpayClient["Razorpay API Client / Simulator<br/>(src/razorpay.js)"]
+        InventoryStore["State & Reservation Store<br/>(src/store.js)"]
+    end
+
+    HumanUI --> RESTAPI
+    HumanUI --> AgentRouter
+    AIBuyer --> WellKnown
+    AIBuyer --> MCPEndpoint
+
+    RESTAPI --> CartPricer
+    MCPEndpoint --> CartPricer
+    AgentRouter --> CartPricer
+
+    CartPricer --> QuoteEngine
+    GrowthEngine --> QuoteEngine
+
+    QuoteEngine --> PolicyEngine
+    Mandates --> PolicyEngine
+
+    PolicyEngine -- "1. Pre-commit Verdict Log" --> HashLedger
+    PolicyEngine -- "2. Verdict: ALLOW" --> RazorpayClient
+    PolicyEngine -- "3. Verdict: REVIEW" --> HumanUI
+    PolicyEngine -- "4. Verdict: DENY / Failed" --> InventoryStore
+
+    RazorpayClient -- "On Decline" --> InventoryStore
+    InventoryStore -- "Compensating Txn (Release Reservation)" --> HashLedger
+    RazorpayClient -- "On Success (Payment Captured)" --> HashLedger
+    HashLedger --> TamperVerify
+```
+
+---
+
 ## The money rail
 
 Every path obeys the same four steps, in `src/checkout.js`:

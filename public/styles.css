@@ -1,0 +1,1585 @@
+/* ==========================================================================
+   Razorbill — Agentic Commerce Rail Styling
+   Design System: Dark Glassmorphism, Custom Typography & Glowing Accents
+   Typography Rules:
+   - Hero:            Manrope 800
+   - Page titles:     Manrope 700
+   - Card titles:     Manrope 650
+   - Body:            Manrope 400
+   - Buttons:         Manrope 600
+   - Revenue numbers: Geist Mono 600
+   - Audit trail:     Geist Mono 400
+   - Transaction IDs: Geist Mono 500
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Geist+Mono:wght@100..900&display=swap');
+
+:root {
+  /* Light premium: true white page, cool-neutral recessed fills, hairline structure.
+     Deliberately NOT the warm cream/beige "premium consumer" palette the taste skill
+     bans as a default -- this is a money console, so it reads cold and precise. */
+  --bg-dark: #ffffff;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #f7f8fa;
+  --bg-recessed: #f2f4f7;
+  --bg-glass: rgba(255, 255, 255, 0.82);
+  --border-color: rgba(13, 18, 28, 0.10);
+  --border-bright: rgba(13, 18, 28, 0.22);
+
+  /* One accent, used everywhere interactive. No glow (taste skill 4.2, THE LILA RULE). */
+  --primary: #2f5fd8;
+  --primary-hover: #2450c4;
+  --primary-glow: rgba(47, 95, 216, 0.16);
+
+  /* Verdict colours, darkened for AA contrast on white. Reserved for policy states
+     only -- never used decoratively. */
+  --emerald: #0f7a4d;
+  --emerald-glow: rgba(15, 122, 77, 0.18);
+  --cyan: #0e7490;
+  --purple: #2f5fd8;
+  --amber: #a8620a;
+  --crimson: #c0362c;
+
+  --text-main: #0d121c;
+  --text-muted: #586274;
+  --text-dim: #8a93a3;
+
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --shadow-md: 0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-lg: 0 8px 24px rgba(16, 24, 40, 0.10), 0 2px 6px rgba(16, 24, 40, 0.05);
+
+  --font-sans: 'Manrope', ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-full: 9999px;
+
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-weight: 400; /* Body: Manrope 400 */
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bg-surface-elevated);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Layout Header */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--primary), var(--purple));
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #fff;
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+
+/* Hero Typography: Manrope 800 */
+.brand-title, .hero-title, .brand b {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.5px;
+  background: linear-gradient(to right, #ffffff, #d1d5db);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand-subtitle {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Nav Tabs & Buttons: Manrope 600 */
+.nav-tabs {
+  display: flex;
+  background: var(--bg-surface);
+  padding: 4px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  gap: 2px;
+}
+
+.nav-tab {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 8px 16px;
+  font-family: var(--font-sans);
+  font-weight: 600; /* Buttons: Manrope 600 */
+  font-size: 13px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-tab:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.nav-tab.active {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+/* Header Status Badges */
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-badge, .pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-dot.green {
+  background: var(--emerald);
+  box-shadow: 0 0 8px var(--emerald-glow);
+}
+
+.status-dot.amber {
+  background: var(--amber);
+}
+
+.status-dot.red {
+  background: var(--crimson);
+}
+
+/* Main Container */
+.main-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 28px;
+}
+
+/* Views */
+.view-panel {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.view-panel.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Layout Helpers */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.grid-layout-sidebar {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 24px;
+}
+
+/* Glass Panels */
+.panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Page titles: Manrope 700 */
+.panel-title, h1, h2, .section-head h2 {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 700; /* Page titles: Manrope 700 */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Product Cards */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary);
+  box-shadow: 0 10px 24px rgba(99, 102, 241, 0.15);
+}
+
+.product-glyph {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+  color: var(--primary);
+  font-family: var(--font-sans);
+  font-size: 22px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+/* Card titles: Manrope 650 */
+.product-title, .card-title, .offer-header {
+  font-family: var(--font-sans);
+  font-weight: 650; /* Card titles: Manrope 650 */
+  font-size: 16px;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.product-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  flex-grow: 1;
+}
+
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Revenue numbers: Geist Mono 600 */
+.product-price, .revenue-number, .cart-total-price, .summary-row.total span:last-child, .stat-val, .val, .num {
+  font-family: var(--font-mono);
+  font-weight: 600; /* Revenue numbers: Geist Mono 600 */
+  font-size: 17px;
+  color: var(--emerald);
+}
+
+/* Buttons: Manrope 600 */
+.btn, button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-weight: 600; /* Buttons: Manrope 600 */
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: var(--transition);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 4px 14px var(--primary-glow);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-emerald {
+  background: var(--emerald);
+  color: #fff;
+  box-shadow: 0 4px 14px var(--emerald-glow);
+}
+
+.btn-emerald:hover {
+  filter: brightness(1.1);
+}
+
+.btn-danger {
+  background: var(--crimson);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: var(--bg-surface-elevated);
+  color: var(--text-main);
+  border-color: var(--border-color);
+}
+
+.btn-secondary:hover {
+  border-color: var(--border-bright);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+/* Cart Drawer / Panel */
+.cart-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 340px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-surface-elevated);
+  padding: 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.cart-summary-box {
+  background: var(--bg-surface-elevated);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  margin-bottom: 16px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.summary-row.total {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  border-top: 1px solid var(--border-color);
+  padding-top: 10px;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+/* Upsell Offer Cards */
+.offers-section {
+  margin-top: 16px;
+}
+
+.offer-card {
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px dashed var(--primary);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.offer-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 650;
+  color: #fff;
+}
+
+.offer-reason {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+/* Chat Assistant Panel */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+}
+
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  margin-bottom: 16px;
+}
+
+.chat-bubble {
+  max-width: 85%;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: var(--font-sans);
+  font-weight: 400; /* Body: Manrope 400 */
+}
+
+.chat-bubble.assistant {
+  align-self: flex-start;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+  border-bottom-left-radius: 2px;
+}
+
+.chat-bubble.user {
+  align-self: flex-end;
+  background: var(--primary);
+  color: #fff;
+  border-bottom-right-radius: 2px;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.input-field {
+  flex-grow: 1;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 14px;
+  outline: none;
+  transition: var(--transition);
+}
+
+.input-field:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 10px var(--primary-glow);
+}
+
+/* Audit Trail & Terminals: Geist Mono 400 */
+.terminal-window, pre, code, .audit-log, .log-container {
+  background: #060911;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-weight: 400; /* Audit trail: Geist Mono 400 */
+  font-size: 13px;
+  overflow: hidden;
+}
+
+.terminal-header {
+  background: var(--bg-surface);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.terminal-body {
+  padding: 16px;
+  max-height: 480px;
+  overflow-y: auto;
+  color: #e5e7eb;
+  white-space: pre-wrap;
+  font-family: var(--font-mono);
+  font-weight: 400; /* Audit trail: Geist Mono 400 */
+}
+
+.audit-row, .log-entry {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  display: grid;
+  grid-template-columns: 50px 180px 110px 80px 1fr;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  font-weight: 400; /* Audit trail: Geist Mono 400 */
+}
+
+.audit-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Transaction IDs & Hashes: Geist Mono 500 */
+.hash-code, .transaction-id, .order-id, .approval-id, .seq-id, #sessionIdDisplay, #ledgerHeadHash, #mintedTokenDisplay, .id {
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-weight: 500; /* Transaction IDs: Geist Mono 500 */
+}
+
+/* Form Controls */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+/* Metric Stats Cards */
+.stat-card {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.stat-val {
+  font-family: var(--font-mono);
+  font-weight: 600; /* Revenue numbers: Geist Mono 600 */
+  font-size: 22px;
+}
+
+.stat-lbl {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Quick Prompts Pills: Manrope 600 */
+.quick-prompts {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.prompt-pill {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  padding: 4px 12px;
+  font-size: 12px;
+  font-family: var(--font-sans);
+  font-weight: 600; /* Buttons / Pills: Manrope 600 */
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.prompt-pill:hover {
+  border-color: var(--primary);
+  color: var(--text-main);
+  background: rgba(99, 102, 241, 0.1);
+}
+
+/* Notification Toast */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-bright);
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 14px;
+  font-family: var(--font-sans);
+  font-weight: 400;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   Razorbill — components added for the policy, audit and growth surfaces.
+   Follows the established system: Manrope for prose, Geist Mono for anything
+   numeric, hashed or machine-generated.
+   ========================================================================== */
+
+.muted-text {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.note-block {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  border-left: 2px solid var(--border-bright);
+  padding: 2px 0 2px 12px;
+  margin-top: 16px;
+}
+
+/* ── policy decision ─────────────────────────────────────────────────── */
+
+.decision {
+  margin-top: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-surface-elevated);
+  animation: fadeIn .3s ease;
+}
+.decision-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+}
+.decision.allow  .decision-top { background: rgba(16, 185, 129, 0.12); }
+.decision.review .decision-top { background: rgba(245, 158, 11, 0.12); }
+.decision.deny   .decision-top,
+.decision.failed .decision-top { background: rgba(239, 68, 68, 0.12); }
+
+.verdict-chip {
+  flex: none;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+}
+.decision.allow  .verdict-chip { background: var(--emerald); color: #04231a; }
+.decision.review .verdict-chip { background: var(--amber);   color: #241802; }
+.decision.deny   .verdict-chip,
+.decision.failed .verdict-chip { background: var(--crimson); color: #2b0708; }
+
+.decision-summary { font-size: 13px; line-height: 1.5; }
+
+.decision-meta {
+  padding: 8px 14px;
+  border-top: 1px solid var(--border-color);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-dim);
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.decision details > summary {
+  padding: 9px 14px;
+  border-top: 1px solid var(--border-color);
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  list-style: none;
+}
+.decision details > summary::-webkit-details-marker { display: none; }
+.decision details > summary::before { content: '▸ '; color: var(--text-dim); }
+.decision details[open] > summary::before { content: '▾ '; }
+.decision details > summary:hover { color: var(--text-main); background: rgba(255,255,255,.03); }
+
+.rule-row {
+  display: grid;
+  grid-template-columns: 8px 190px 1fr;
+  gap: 10px;
+  align-items: baseline;
+  padding: 5px 14px;
+  font-size: 12px;
+}
+.rule-row .rule-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--emerald); align-self: center; }
+.rule-row.review .rule-dot { background: var(--amber); }
+.rule-row.deny   .rule-dot { background: var(--crimson); }
+.rule-row.allow  { opacity: .45; }
+.rule-row .rule-id { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+.rule-row .rule-why { color: var(--text-dim); line-height: 1.45; }
+.rule-row.deny .rule-why, .rule-row.review .rule-why { color: var(--text-main); }
+
+/* ── approvals ───────────────────────────────────────────────────────── */
+
+.approval-card {
+  border: 1px solid var(--amber);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-elevated);
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.approval-card .ap-top { padding: 14px; background: rgba(245, 158, 11, 0.1); }
+.approval-card .ap-amt {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 22px;
+}
+.approval-card .ap-why { font-size: 13px; margin-top: 6px; line-height: 1.5; }
+.approval-card .ap-meta {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-dim);
+  margin-top: 8px;
+}
+.approval-card .ap-actions { display: flex; gap: 8px; padding: 12px 14px; }
+
+/* ── growth ──────────────────────────────────────────────────────────── */
+
+.bar-row { margin-bottom: 14px; }
+.bar-label { display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 5px; }
+.bar-label b { font-family: var(--font-mono); font-weight: 600; }
+.bar-track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--bg-dark);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  position: relative;
+}
+.bar-fill { position: absolute; inset: 0 auto 0 0; border-radius: 4px; }
+.bar-fill.control { background: #3d4557; }
+.bar-fill.treatment { background: linear-gradient(90deg, var(--primary), var(--purple)); }
+.bar-legend { display: flex; gap: 18px; font-size: 11.5px; color: var(--text-dim); margin-bottom: 14px; }
+.bar-legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px; }
+
+table.affinity { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.affinity th {
+  text-align: left;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  font-weight: 600;
+  padding: 0 8px 8px 0;
+}
+table.affinity td { padding: 7px 8px 7px 0; border-top: 1px solid var(--border-color); }
+table.affinity td.n { font-family: var(--font-mono); text-align: right; }
+table.affinity td.lift { color: var(--primary); font-weight: 600; }
+
+.campaign-card {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-elevated);
+  padding: 14px;
+  margin-bottom: 10px;
+}
+.campaign-card .cc-title { font-weight: 700; font-size: 13.5px; }
+.campaign-card .cc-trigger { font-size: 12px; color: var(--text-dim); margin-top: 3px; }
+.campaign-card .cc-msg { font-size: 13px; color: var(--text-muted); margin-top: 8px; }
+.campaign-card .cc-foot { display: flex; gap: 10px; align-items: center; margin-top: 12px; }
+.cap-chip {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--amber);
+  background: rgba(245, 158, 11, 0.12);
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── audit verdict colouring ─────────────────────────────────────────── */
+
+.audit-row.sev-warn  { border-left: 2px solid var(--amber); }
+.audit-row.sev-error { border-left: 2px solid var(--crimson); }
+.audit-row.money     { border-left: 2px solid var(--primary); }
+.audit-row.broken    { background: rgba(239, 68, 68, 0.14); }
+
+.empty-state {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--text-dim);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.empty-state b { display: block; color: var(--text-muted); margin-bottom: 4px; }
+
+@media (max-width: 1080px) {
+  .grid-layout-sidebar, .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .app-header { flex-wrap: wrap; gap: 12px; }
+  .nav-tabs { order: 3; width: 100%; overflow-x: auto; }
+  .audit-row, .log-entry { grid-template-columns: 44px 1fr; }
+  .audit-row span:nth-child(n+3) { grid-column: 2; }
+  .rule-row { grid-template-columns: 8px 1fr; }
+  .rule-row .rule-why { grid-column: 2; }
+}
+
+/* ==========================================================================
+   Two-pane shell — conversational storefront beside a live merchant console.
+   Overrides the full-page tabbed layout: the demo depends on watching a money
+   action get gated and hash-chained in the same viewport it was triggered from.
+   ========================================================================== */
+
+body.shell { overflow: hidden; height: 100dvh; }
+
+body.shell .app-shell {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100dvh;
+}
+
+body.shell .app-header {
+  padding: 0 20px;
+  height: 60px;
+  flex-wrap: nowrap;
+}
+
+body.shell .panes {
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr);
+  min-height: 0;
+}
+
+body.shell .pane {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  min-height: 0;
+  min-width: 0;
+}
+body.shell .pane + .pane { border-left: 1px solid var(--border-color); }
+
+.pane-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-surface);
+}
+.pane-head h2 {
+  margin: 0;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-muted);
+  background: none;
+  -webkit-text-fill-color: currentColor;
+}
+
+.console-tabs { display: flex; gap: 2px; margin-left: auto; }
+.console-tabs button {
+  background: none;
+  border: 0;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.console-tabs button:hover { color: var(--text-main); background: rgba(255,255,255,.04); }
+.console-tabs button.active { color: #fff; background: var(--primary); box-shadow: 0 3px 10px var(--primary-glow); }
+.console-tabs button .tab-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: var(--amber);
+  color: #241802;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.pane-scroll { overflow-y: auto; overflow-x: hidden; min-height: 0; padding: 18px; }
+.pane-foot { border-top: 1px solid var(--border-color); background: var(--bg-surface); }
+
+.console-view { display: none; }
+.console-view.active { display: block; animation: fadeIn .25s ease; }
+
+/* left pane: chat */
+
+body.shell #chatMessages {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+body.shell .chat-bubble { max-width: 92%; }
+body.shell .chat-bubble.assistant { width: 100%; }
+
+/* catalog rail above the composer */
+
+.rail-toggle {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 8px 18px;
+  color: var(--text-dim);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border-color);
+}
+.rail-toggle:hover { color: var(--text-muted); background: rgba(255,255,255,.03); }
+
+.rail {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 10px 18px 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+.rail button {
+  flex: none;
+  width: 138px;
+  text-align: left;
+  cursor: pointer;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  transition: var(--transition);
+}
+.rail button:hover:not(:disabled) { border-color: var(--primary); background: rgba(99,102,241,.08); }
+.rail button:disabled { opacity: .4; cursor: not-allowed; }
+.rail .rail-title { font-size: 12px; line-height: 1.35; height: 32px; overflow: hidden; color: var(--text-main); font-weight: 600; }
+.rail .rail-price { font-family: var(--font-mono); font-weight: 600; font-size: 12px; color: var(--emerald); margin-top: 6px; }
+
+/* cart strip */
+
+.cart-strip { padding: 12px 18px; border-bottom: 1px solid var(--border-color); }
+.cart-strip-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+.cart-strip .cart-item { padding: 5px 0; border: 0; }
+.cart-strip-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 9px;
+  padding-top: 9px;
+  border-top: 1px dashed var(--border-color);
+}
+.cart-strip-total .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-dim); }
+.cart-strip-total .amt { font-family: var(--font-mono); font-weight: 600; font-size: 18px; }
+.ship-hint { font-size: 11.5px; color: var(--text-dim); margin-top: 4px; }
+.ship-hint .free { color: var(--emerald); font-weight: 600; }
+
+.composer { display: flex; gap: 8px; padding: 12px 18px; align-items: center; }
+.composer .input-field { flex: 1; min-width: 0; margin: 0; }
+.composer select.input-field { flex: 0 0 auto; width: 190px; font-size: 12px; }
+
+/* console footer */
+
+.console-foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px 18px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.console-foot .spacer { flex: 1; }
+
+body.shell .panel { padding: 0; background: none; border: 0; box-shadow: none; }
+body.shell .panel-header { margin-bottom: 14px; }
+
+@media (max-width: 1024px) {
+  body.shell { overflow: auto; height: auto; }
+  body.shell .app-shell { height: auto; }
+  body.shell .panes { grid-template-columns: 1fr; }
+  body.shell .pane + .pane { border-left: 0; border-top: 1px solid var(--border-color); }
+  body.shell .pane-scroll { max-height: 66vh; }
+  body.shell .app-header { flex-wrap: wrap; height: auto; padding: 10px 14px; }
+  .header-status { order: 3; }
+}
+
+/* Grid items default to min-width:auto, so a wide child (a long chat bubble, a
+   monospace audit row) can force the whole pane past its column. Pin every track and
+   item to minmax(0,1fr)/min-width:0 so the panes stay inside their columns. */
+body.shell .panes { overflow: hidden; }
+body.shell .pane { grid-template-columns: minmax(0, 1fr); }
+body.shell .pane > * { min-width: 0; max-width: 100%; }
+body.shell .pane-scroll,
+body.shell .pane-foot,
+body.shell .pane-head { min-width: 0; }
+body.shell .chat-bubble { max-width: 100%; overflow-wrap: anywhere; }
+body.shell .terminal-window { max-width: 100%; }
+body.shell .terminal-body { white-space: pre-wrap; overflow-wrap: anywhere; }
+body.shell .audit-row { min-width: 0; }
+body.shell .audit-row > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* The design system styles bare `button` as an inline-flex pill, which flattens the
+   stacked catalog cards. Opt the rail out, and let [hidden] actually hide it. */
+.rail[hidden] { display: none; }
+.rail button {
+  display: block;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  box-shadow: none;
+}
+.rail button:hover:not(:disabled) { transform: none; }
+
+/* The composer is the primary control and must never be pushed out of the viewport.
+   Offers can make the cart strip tall, so it scrolls inside a bounded height instead
+   of growing the footer without limit. */
+body.shell .pane-foot { max-height: 68vh; display: flex; flex-direction: column; min-height: 0; }
+body.shell .cart-strip { max-height: 30vh; overflow-y: auto; min-height: 0; flex: 0 1 auto; }
+body.shell #decisionPanel { max-height: 26vh; overflow-y: auto; flex: 0 1 auto; }
+body.shell .composer { flex: none; }
+body.shell .quick-prompts { flex: none; }
+
+/* Keep the console footer on one line: the head hash truncates rather than pushing
+   the controls onto their own rows. */
+body.shell .console-foot { flex-wrap: nowrap; }
+body.shell .console-foot > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+body.shell .console-foot .btn { flex: none; }
+
+/* .pane-foot sets a column layout for the storefront footer (prompts, rail, cart,
+   composer stacked). The console footer shares that class but is a single toolbar row,
+   so it opts back into row direction. */
+body.shell .console-foot {
+  flex-direction: row;
+  align-items: center;
+  max-height: none;
+}
+
+/* ==========================================================================
+   Storefront dock — decongestion pass.
+
+   The footer previously stacked six blocks under the chat (prompts, rail toggle,
+   rail, cart, offers, decision panel, composer), leaving the conversation squeezed
+   into a sliver. It is now two fixed rows — a one-line dock and the composer — with
+   the catalog and cart as expandables that open ABOVE the dock, so neither the dock
+   nor the composer ever shifts position. Offers and policy decisions now render in
+   the conversation itself, which is where they belong: they are things the agent
+   said, not permanent chrome.
+   ========================================================================== */
+
+.dock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  min-height: 42px;
+}
+
+.dock-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 4px 9px;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 12.5px;
+  transition: var(--transition);
+  box-shadow: none;
+}
+.dock-btn:hover { color: var(--text-main); background: rgba(255,255,255,.05); }
+.dock-btn[aria-expanded="true"] { color: var(--text-main); border-color: var(--border-bright); background: rgba(255,255,255,.05); }
+.dock-btn::before { content: '▸'; color: var(--text-dim); font-size: 10px; }
+.dock-btn[aria-expanded="true"]::before { content: '▾'; }
+
+.dock-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: var(--bg-surface-elevated);
+  color: var(--text-muted);
+}
+.dock-btn[aria-expanded="true"] .dock-count,
+.dock-count.filled { background: var(--primary); color: #04121f; }
+
+.dock-total { font-family: var(--font-mono); font-weight: 600; color: var(--text-main); }
+.dock-hint { font-size: 11.5px; color: var(--text-dim); margin-left: auto; white-space: nowrap; }
+.dock-hint .free { color: var(--emerald); font-weight: 600; }
+
+.drawer {
+  max-height: 34vh;
+  overflow-y: auto;
+  padding: 10px 18px;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-dark);
+}
+.drawer[hidden] { display: none; }
+
+/* Cockpit density (VISUAL_DENSITY 8-10): 1px rules separate data, not card boxes. */
+.drawer .cart-item {
+  border: 0;
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 0;
+  background: none;
+  padding: 7px 0;
+  margin: 0;
+}
+.drawer .cart-item:last-of-type { border-bottom: 0; }
+.drawer .offer-card { margin-top: 8px; }
+
+/* Decision panels and offers now live in the chat stream. */
+.chat-bubble .decision { margin-top: 0; }
+.chat-bubble .offer-card:first-child { margin-top: 8px; }
+
+/* ==========================================================================
+   LIGHT PREMIUM CORRECTIONS
+
+   The base sheet was authored dark, so a number of rules hardcode dark-theme
+   assumptions: white-alpha hovers (invisible on white), heavy black shadows, a
+   white-to-grey text gradient on the wordmark, and dark-on-dark verdict chips.
+   These are the corrections. Structure is carried by hairline borders and a
+   restrained shadow scale rather than by fills.
+   ========================================================================== */
+
+/* Hovers: white-alpha is invisible on white; invert to ink-alpha. */
+.console-tabs button:hover,
+.dock-btn:hover,
+.dock-btn[aria-expanded="true"],
+.rail-toggle:hover,
+.decision details > summary:hover,
+.audit-row:hover, .log-entry:hover,
+.nav-tab:hover { background: rgba(13, 18, 28, 0.045); color: var(--text-main); }
+
+.rail button:hover:not(:disabled),
+.product-card:hover { background: rgba(47, 95, 216, 0.05); border-color: var(--primary); }
+
+/* Wordmark: the dark sheet painted it with a white-to-grey gradient. */
+.brand-title, .hero-title, .brand b {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: var(--text-main);
+}
+
+/* Shadows: premium light is hairline + whisper, never a dark halo. */
+.panel { box-shadow: none; border: 1px solid var(--border-color); }
+.product-card:hover { box-shadow: var(--shadow-md); transform: none; }
+.toast { box-shadow: var(--shadow-lg); background: #ffffff; border: 1px solid var(--border-color); color: var(--text-main); }
+.nav-tab.active, .console-tabs button.active { box-shadow: none; }
+.brand-icon { box-shadow: none; background: var(--text-main); color: #fff; }
+
+/* Filled chips: white text on the darkened verdict colours. */
+.decision.allow  .verdict-chip,
+.decision.review .verdict-chip,
+.decision.deny   .verdict-chip,
+.decision.failed .verdict-chip,
+.console-tabs button.active,
+.dock-count.filled,
+.btn-primary, .btn-emerald, .btn-danger { color: #ffffff; }
+
+.console-tabs button .tab-badge { background: var(--amber); color: #ffffff; }
+
+/* Verdict wash tints, re-weighted for a white ground. */
+.decision.allow  .decision-top { background: rgba(15, 122, 77, 0.07); }
+.decision.review .decision-top { background: rgba(168, 98, 10, 0.08); }
+.decision.deny   .decision-top,
+.decision.failed .decision-top { background: rgba(192, 54, 44, 0.07); }
+.approval-card .ap-top { background: rgba(168, 98, 10, 0.07); }
+.audit-row.broken { background: rgba(192, 54, 44, 0.09); }
+.cap-chip { background: rgba(168, 98, 10, 0.10); }
+
+/* Data surfaces: hairline rules on white, per cockpit density. */
+.terminal-window, .audit-log, .log-container {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+}
+.terminal-header {
+  background: var(--bg-surface-elevated);
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-color);
+}
+.audit-row, .log-entry { border-bottom: 1px solid var(--border-color); }
+
+/* Code surfaces stay dark on purpose: a dark block on a white page is the standard
+   premium docs pattern, and machine output reads better against it. */
+pre.terminal-body {
+  background: #0d121c;
+  color: #e6e9ef;
+  border: 0;
+}
+
+/* Inputs and secondary buttons need a real edge once the fill goes white. */
+.input-field, select.input-field, .btn-secondary, .btn {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+}
+.input-field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); outline: none; }
+.btn-primary { background: var(--primary); border-color: var(--primary); }
+.btn-primary:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+.btn-emerald { background: var(--emerald); border-color: var(--emerald); }
+.btn-danger { background: var(--crimson); border-color: var(--crimson); }
+.status-badge, .pill { background: var(--bg-surface-elevated); box-shadow: none; }
+
+/* Chat: white pane, so the assistant bubble needs a recessed fill to read as a bubble. */
+body.shell .chat-bubble.assistant {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+}
+body.shell .chat-bubble.user { background: var(--primary); color: #ffffff; }
+
+/* Recessed areas: dock drawer and rail sit below the page plane. */
+body.shell .drawer { background: var(--bg-surface-elevated); }
+body.shell .pane-head, body.shell .pane-foot { background: #ffffff; }
+.app-header { background: var(--bg-glass); }
+
+/* Growth bars: grey control track, accent treatment. No gradient. */
+.bar-fill.control { background: #ced5e0; }
+.bar-fill.treatment { background: var(--primary); }
+.bar-track { background: var(--bg-recessed); }
+
+/* Scrollbars. */
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d4d9e1; }
+::-webkit-scrollbar-thumb:hover { background: #b6becb; }
+
+/* Selects render their popup with the page colour scheme; declare it so the native
+   dropdown is light too rather than inheriting the browser default. */
+:root { color-scheme: light; }
+
+/* Contrast pass on the white ground. --text-dim was tuned for a dark sheet and landed
+   at 2.9:1 on white, which fails AA for body text. Darkened to clear 4.5:1, and the
+   de-emphasis on passed policy rules eased so "Passed." stays legible rather than
+   merely present. */
+:root { --text-dim: #646e80; }
+.rule-row.allow { opacity: 0.62; }
+
+/* Hashes and ids are identifiers, not links -- cyan on white reads as clickable and
+   they are not. Neutral mono keeps them scannable without promising navigation. */
+.hash-code, .transaction-id, .order-id, .approval-id, .seq-id,
+#sessionIdDisplay, #ledgerHeadHash, #mintedTokenDisplay, .id { color: var(--text-muted); }
+pre.terminal-body .hash-code, .terminal-header .hash-code { color: #9aa4b5; }
+
+/* ==========================================================================
+   TYPE SYSTEM — Manrope primary, Geist Mono for data only.
+
+   Manrope carries every human-readable surface: conversation, product names,
+   dashboard, navigation, buttons, headings, explanations, guardrail messages and
+   empty states. Geist Mono is reserved for values a person scans or compares —
+   money, identifiers, log lines, status labels — and nothing else. Used sparingly
+   is what makes it read as premium rather than as a theme.
+
+   Manrope is loaded on its variable axis (200..800) so 650 and 750 are real
+   instances, not synthetic bolding.
+   ========================================================================== */
+
+:root {
+  --w-hero: 800;
+  --w-page: 750;
+  --w-section: 700;
+  --w-card: 650;
+  --w-nav: 600;
+  --w-label: 600;
+  --w-body: 450;
+}
+
+/* ── Manrope ─────────────────────────────────────────────────────────────── */
+
+body, .chat-bubble, .muted-text, .note-block, .empty-state,
+.decision-summary, .offer-reason, .product-desc, .cc-msg, .rail-title {
+  font-family: var(--font-sans);
+  font-weight: var(--w-body);
+}
+
+/* Body text 400–500 / 14–16px */
+body { font-size: 15px; line-height: 1.6; }
+.chat-bubble { font-size: 15px; font-weight: var(--w-body); line-height: 1.55; }
+.muted-text, .note-block, .offer-reason, .product-desc, .cc-msg { font-size: 14px; }
+.empty-state { font-size: 14px; font-weight: 500; }
+
+/* Guardrail messages read as body, never as chrome. */
+.decision-summary { font-size: 15px; font-weight: 500; line-height: 1.5; }
+.ap-why { font-family: var(--font-sans); font-size: 15px; font-weight: 500; }
+
+/* Page title 750 / 32–40px — scaled to a header bar wordmark. */
+.brand-title { font-family: var(--font-sans); font-weight: var(--w-page); font-size: 19px; letter-spacing: -0.02em; }
+.brand-subtitle { font-family: var(--font-sans); font-weight: var(--w-body); font-size: 12px; }
+
+/* Section heading 700 / 20–24px */
+.panel-title, h1, h2, h3.sec {
+  font-family: var(--font-sans);
+  font-weight: var(--w-section);
+  font-size: 20px;
+  letter-spacing: -0.015em;
+}
+
+/* Card title 650 / 16–18px */
+.offer-header, .cc-title, .terminal-header {
+  font-family: var(--font-sans);
+  font-weight: var(--w-card);
+  font-size: 16px;
+}
+
+/* Product names 650 / 15–17px */
+.product-title { font-family: var(--font-sans); font-weight: var(--w-card); font-size: 16px; letter-spacing: -0.01em; }
+.rail-title { font-weight: var(--w-card); font-size: 14px; }
+.drawer .cart-item > div:first-child > div:first-child { font-family: var(--font-sans); font-weight: var(--w-card); font-size: 15px; }
+
+/* Navigation 600 / 13–14px */
+.nav-tab, .console-tabs button, .dock-btn {
+  font-family: var(--font-sans);
+  font-weight: var(--w-nav);
+  font-size: 13px;
+}
+
+/* Buttons 650 / 13–14px */
+.btn, .btn-primary, .btn-secondary, .btn-emerald, .btn-danger, .prompt-pill {
+  font-family: var(--font-sans);
+  font-weight: var(--w-card);
+  font-size: 13px;
+}
+.btn-sm { font-size: 12.5px; }
+
+/* Labels 600 / 11–12px */
+.form-label, .stat-lbl, .pane-head h2, .cart-strip-head, .dock-hint, .bar-label span,
+table.affinity th, .cc-trigger {
+  font-family: var(--font-sans);
+  font-weight: var(--w-label);
+  font-size: 11.5px;
+}
+.pane-head h2 { letter-spacing: 0.09em; }
+
+/* ── Geist Mono — data only ──────────────────────────────────────────────── */
+
+.mono-data, .stat-val, .ap-amt, .product-price, .rail-price, .dock-total, .dock-count,
+.hash-code, .audit-row, .log-entry, .status-badge, .rule-id, .verdict-chip, .otype,
+.decision-meta, .ap-meta, .cap-chip, .evidence span, .bar-label b, table.affinity td.n,
+.cart-total-price, .summary-row.total span:last-child, pre, code, .terminal-body {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Revenue numbers 600–700 / 28–40px */
+.stat-val { font-weight: 650; font-size: 30px; letter-spacing: -0.02em; }
+
+/* Payment amount 650 / 28–36px */
+.ap-amt { font-weight: 650; font-size: 30px; letter-spacing: -0.02em; }
+
+/* Monetary values in dense contexts stay mono but drop to a scannable size. */
+.product-price { font-weight: 600; font-size: 15px; }
+.rail-price, .dock-total { font-weight: 600; font-size: 13px; }
+.bar-label b { font-weight: 600; font-size: 12.5px; }
+table.affinity td.n { font-weight: 500; font-size: 12.5px; }
+
+/* Transaction / order IDs 500 / 11–12px */
+.hash-code, .transaction-id, .order-id, .approval-id, .seq-id,
+#sessionIdDisplay, #ledgerHeadHash, #mintedTokenDisplay, .id,
+.ap-meta { font-weight: 500; font-size: 11.5px; }
+
+/* Audit log 400–500 / 11–13px */
+.audit-row, .log-entry { font-weight: 400; font-size: 12px; }
+.audit-row span:nth-child(2) { font-weight: 500; }
+
+/* API / status labels 500 / 11–12px */
+.status-badge, .rule-id, .cap-chip, .decision-meta, .evidence span, .dock-count {
+  font-weight: 500;
+  font-size: 11.5px;
+}
+.verdict-chip { font-weight: 600; font-size: 11px; letter-spacing: 0.08em; }
+.otype { font-weight: 500; font-size: 10.5px; letter-spacing: 0.06em; }
+.terminal-body { font-weight: 400; font-size: 12.5px; }
+
+/* Rule trace: the id is data, the reason is prose. */
+.rule-row .rule-why { font-family: var(--font-sans); font-weight: var(--w-body); font-size: 12.5px; }
+
+/* The terminal header is a caption, not data — Manrope, per the card-title rule above. */
+.terminal-header { font-size: 12.5px; font-weight: var(--w-nav); letter-spacing: 0; }
+.terminal-header .hash-code { font-family: var(--font-mono); font-weight: 500; font-size: 11.5px; }
+
+/* Recommended-product names were painted #fff by the dark sheet and vanished against
+   the pale offer card. They are product names, so they take the Manrope card-title
+   treatment in primary ink. The card tint is also re-pointed at the current accent —
+   it was still carrying the old indigo after the palette change. */
+.offer-header { color: var(--text-main); }
+.offer-card {
+  background: rgba(47, 95, 216, 0.045);
+  border: 1px solid rgba(47, 95, 216, 0.22);
+}
+.offer-card .hash-code { color: var(--text-muted); }
+
+/* Remaining old-indigo literals, re-pointed at the accent (taste skill 4.2:
+   COLOR CONSISTENCY LOCK — one accent, used on the whole surface). */
+.product-glyph { background: rgba(47, 95, 216, 0.10); color: var(--primary); }
+.product-card:hover { box-shadow: var(--shadow-md); }
+.stat-icon { background: rgba(47, 95, 216, 0.10); color: var(--primary); }
+.prompt-pill:hover { background: rgba(47, 95, 216, 0.07); border-color: var(--primary); }
+.rail button:hover:not(:disabled) { background: rgba(47, 95, 216, 0.05); }
+
+/* Offer card: product name is the headline, evidence is secondary. Numbers stay in
+   Geist Mono because they are compared at a glance; the provenance phrase is prose
+   and takes Manrope. */
+.offer-name {
+  font-family: var(--font-sans);
+  font-weight: var(--w-card);
+  font-size: 15px;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+}
+.offer-price {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--emerald);
+  white-space: nowrap;
+  margin-left: 10px;
+}
+.offer-header { align-items: baseline; gap: 8px; }
+
+.offer-evidence { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 9px 0; }
+.ev-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  font-size: 10.5px;
+  color: var(--text-muted);
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+.ev-basis {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 11.5px;
+  color: var(--text-dim);
+}

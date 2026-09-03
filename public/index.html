@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Razorbill — agentic commerce rail</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='25' font-size='24'>◉</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body class="shell">
+
+<div class="app-shell">
+
+  <header class="app-header">
+    <div class="brand-section">
+      <div class="brand-icon">◉</div>
+      <div>
+        <div class="brand-title">Razorbill</div>
+        <div class="brand-subtitle">Agentic commerce rail · <span id="merchantName">Bluebrew Coffee Co.</span></div>
+      </div>
+    </div>
+
+    <div class="header-status" style="margin-left:auto;">
+      <span class="status-badge" id="modeBadge">MODE: —</span>
+      <span class="status-badge">
+        <span class="status-dot green" id="chainStatusDot"></span>
+        <span id="chainStatusBadge">HASH CHAIN: VALID</span>
+      </span>
+      <span class="status-badge">revenue <b class="hash-code" id="mRevenue">₹0.00</b></span>
+      <span class="status-badge">orders <b class="hash-code" id="mOrders">0</b></span>
+      <select class="input-field" id="demoMenu" style="width:auto;padding:6px 10px;font-size:12px;margin:0;">
+        <option value="">Run a scenario…</option>
+        <option value="decline">Card decline → recover</option>
+        <option value="approval">Over the auto-approve limit</option>
+        <option value="hardcap">Over the hard cap</option>
+        <option value="buyer">Autonomous AI buyer</option>
+        <option value="tamper">Tamper with the ledger</option>
+        <option value="reset">Reset everything</option>
+      </select>
+    </div>
+  </header>
+
+  <div class="panes">
+
+    <!-- ═══ LEFT: conversational storefront ══════════════════════════════ -->
+    <section class="pane" aria-label="Storefront">
+      <div class="pane-head">
+        <h2>Conversational checkout</h2>
+        <span class="status-badge">Rule-based agent · no LLM calls</span>
+        <span class="status-badge" style="margin-left:auto;">session <b class="hash-code" id="sessionIdDisplay">—</b></span>
+      </div>
+
+      <div class="pane-scroll" id="chatMessages"></div>
+
+      <div class="pane-foot">
+        <!-- Expandables sit ABOVE the dock so the dock and composer never move. -->
+        <div class="rail" id="rail" hidden></div>
+
+        <div class="drawer" id="cartDrawer" hidden>
+          <div id="cartList"></div>
+          <div id="offersSection"></div>
+        </div>
+
+        <!-- One line: catalog toggle, cart summary, shipping hint. -->
+        <div class="dock">
+          <button class="dock-btn" id="railToggle" aria-expanded="false" onclick="toggleRail()">Catalog</button>
+          <button class="dock-btn" id="cartToggle" aria-expanded="false" onclick="toggleCart()">
+            Cart <span class="dock-count" id="cartCount">0</span>
+            <b class="dock-total" id="cartTotal">₹0.00</b>
+          </button>
+          <span class="dock-hint" id="shipHint"></span>
+          <span style="display:none;"><span id="cartSubtotal"></span><span id="cartShipping"></span><span id="chatCartTotal"></span></span>
+        </div>
+
+        <div class="composer">
+          <input class="input-field" id="chatInput" type="text" autocomplete="off"
+                 placeholder="Ask for something — “add two bags of the dark roast”"
+                 onkeydown="if(event.key==='Enter')sendChatMessage()">
+          <select class="input-field" id="paymentInstrumentSelect" title="Test instrument the agent pays with"></select>
+          <button class="btn btn-primary" onclick="handleCheckout()">Pay</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ RIGHT: merchant console ══════════════════════════════════════ -->
+    <section class="pane" aria-label="Merchant console">
+      <div class="pane-head">
+        <h2>Merchant console</h2>
+        <div class="console-tabs" role="tablist">
+          <button class="active" data-view="cv-audit" role="tab">Audit trail</button>
+          <button data-view="cv-approvals" role="tab">Approvals<span class="tab-badge" id="approvalsBadge">0</span></button>
+          <button data-view="cv-growth" role="tab">Growth</button>
+          <button data-view="cv-agent" role="tab">AI buyer</button>
+        </div>
+      </div>
+
+      <div class="pane-scroll">
+
+        <!-- audit -->
+        <div class="console-view active" id="cv-audit">
+          <p class="muted-text">
+            Every money action is written here <b>before</b> it executes, and each entry commits to
+            the hash of the one before it. Editing any historical row invalidates that row and
+            every hash after it.
+          </p>
+          <div class="terminal-window">
+            <div class="terminal-header"><span>seq · action · amount · verdict · hash</span></div>
+            <div id="auditRows" style="max-height:60vh;overflow-y:auto;"></div>
+          </div>
+        </div>
+
+        <!-- approvals -->
+        <div class="console-view" id="cv-approvals">
+          <p class="muted-text">
+            Anything over the auto-approve limit stops here. Nothing is reserved and nothing is
+            charged while it waits. Approval clears a hold — it can never clear a hard denial.
+          </p>
+          <div id="approvalsList"></div>
+
+          <div class="panel" style="margin-top:22px;">
+            <div class="panel-header"><div class="panel-title">Spending policy</div></div>
+            <div class="form-group">
+              <label class="form-label" for="autoApproveLimit">Auto-approve up to (₹)</label>
+              <input class="input-field" id="autoApproveLimit" type="number" readonly>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="hardCapLimit">Hard refusal above (₹) — unoverridable</label>
+              <input class="input-field" id="hardCapLimit" type="number" readonly>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="dailyCapLimit">Agent daily budget (₹)</label>
+              <input class="input-field" id="dailyCapLimit" type="number" readonly>
+            </div>
+            <div id="policyRuleList"></div>
+            <div class="status-badge" style="margin-top:10px;" id="policyModeLabel">—</div>
+          </div>
+        </div>
+
+        <!-- growth -->
+        <div class="console-view" id="cv-growth">
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">Measured lift — agent on vs off</div>
+              <button class="btn btn-secondary btn-sm" onclick="loadLift()">Re-run</button>
+            </div>
+            <div class="grid-3" id="liftKpis"></div>
+            <div id="liftBars" style="margin-top:20px;"></div>
+            <div class="note-block" id="liftCaveat"></div>
+          </div>
+
+          <div class="panel" style="margin-top:24px;">
+            <div class="panel-header"><div class="panel-title">Co-purchase affinity</div></div>
+            <p class="muted-text">
+              Lift is how much more often two products sell together than chance predicts.
+              Every recommendation the agent makes carries these numbers.
+            </p>
+            <div class="form-group">
+              <label class="form-label" for="affinitySelect">Anchor product</label>
+              <select class="input-field" id="affinitySelect" onchange="loadAffinity()"></select>
+            </div>
+            <div id="affinityTable"></div>
+          </div>
+
+          <div class="panel" style="margin-top:24px;">
+            <div class="panel-header"><div class="panel-title">Campaign orchestrator</div></div>
+            <p class="muted-text">
+              Campaigns are rules with explicit triggers, bounded incentives and cooldowns. A
+              campaign that spends margin is a money action and clears the same gate as a charge.
+            </p>
+            <div id="campaignsList"></div>
+          </div>
+        </div>
+
+        <!-- ai buyer -->
+        <div class="console-view" id="cv-agent">
+          <div class="panel">
+            <div class="panel-header"><div class="panel-title">1 · Mint a spending mandate</div></div>
+            <p class="muted-text">
+              Delegated authority signed with HMAC-SHA256: a ceiling, an allowed category list,
+              an item cap, an expiry and a single-use nonce. An agent without one is denied
+              before any gateway call is made.
+            </p>
+            <div class="form-group">
+              <label class="form-label" for="mandateBuyerAgent">Buyer agent id</label>
+              <input class="input-field" id="mandateBuyerAgent" type="text" value="agent:sandbox-buyer">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="mandateBudget">Ceiling (₹)</label>
+              <input class="input-field" id="mandateBudget" type="number" value="3500" min="1">
+            </div>
+            <button class="btn btn-primary" onclick="mintMandateSimulator()">Mint signed mandate</button>
+            <div class="form-group" style="margin-top:14px;">
+              <label class="form-label">Token</label>
+              <div class="hash-code" id="mintedTokenDisplay">— not minted yet —</div>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-top:24px;">
+            <div class="panel-header"><div class="panel-title">2 · Run the autonomous buyer</div></div>
+            <p class="muted-text">
+              Executes the real flow on the server — discovery, mandate, search, upsell
+              evaluation, a genuine decline, an idempotent replay, UPI recovery and a mandate
+              replay attempt. Every line is an actual result, not a script.
+            </p>
+            <button class="btn btn-emerald" onclick="runBuyerSimulationUI()">Run buyer agent</button>
+            <div class="terminal-window" style="margin-top:14px;">
+              <div class="terminal-header"><span class="hash-code">buyer-agent · live</span></div>
+              <pre class="terminal-body" id="buyerSimTerminal" style="max-height:300px;">Idle. Press “Run buyer agent”.</pre>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-top:24px;">
+            <div class="panel-header">
+              <div class="panel-title">Agent discovery manifest</div>
+              <span class="status-badge hash-code">/.well-known/agent-commerce.json</span>
+            </div>
+            <div class="terminal-window">
+              <pre class="terminal-body" id="mcpManifestDisplay" style="max-height:300px;">loading…</pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pane-foot console-foot">
+        <span>head <b class="hash-code" id="ledgerHeadHash">—</b></span>
+        <div class="spacer"></div>
+        <button class="btn btn-secondary btn-sm" onclick="exportLedger()">Export</button>
+        <button class="btn btn-danger btn-sm" onclick="triggerTamper()">Tamper</button>
+        <button class="btn btn-secondary btn-sm" onclick="resetAuditLedger()">Reset</button>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="/js/app.js"></script>
+</body>
+</html>

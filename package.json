@@ -1,0 +1,15 @@
+{
+  "name": "razorbill",
+  "version": "1.0.0",
+  "description": "Agentic commerce rail for Razorpay merchants: agent-readable storefront + bounded, gated, audited money actions.",
+  "type": "module",
+  "main": "server.js",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node scripts/test-ui-api.js",
+    "buyer": "node scripts/buyer-agent.js",
+    "lift": "node -e \"import('./src/growth.js').then(g=>console.log(JSON.stringify(g.simulateLift().delta,null,2)))\""
+  },
+  "license": "MIT"
+}

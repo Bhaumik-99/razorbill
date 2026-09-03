@@ -211,6 +211,59 @@ to retry on the same key. A bank decline is not, and says so.
 8. Audit                          chain valid, 6 entries on the order
 ```
 
+### Protocol & Transaction Lifecycle
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Buyer as AI Buyer Agent (MCP)
+    participant Server as Razorbill Rail (/mcp)
+    participant Policy as 17-Rule Policy Gate
+    participant Razorpay as Razorpay API / Simulator
+    participant Store as Inventory & State Store
+    participant Ledger as Hash-Chained Ledger
+
+    Note over Buyer,Server: 1. Discovery & Mandate Setup
+    Buyer->>Server: GET /.well-known/agent-commerce.json
+    Server-->>Buyer: Discovery Manifest & Policy Bounds
+    Buyer->>Server: POST /api/mandate (HMAC Token, Limit: ₹3,500)
+    Server->>Ledger: mandate.issued
+    Server-->>Buyer: Signed Mandate Token
+
+    Note over Buyer,Server: 2. Catalog Search & Explainable Upsell
+    Buyer->>Server: search_catalog + add_to_cart
+    Server-->>Buyer: Cart quote + Affinity-backed offer (+Paper Filters)
+    Buyer->>Server: accept_offer (within ₹3,500 cap)
+
+    Note over Buyer,Razorpay: 3. Attempt 1: Decline & Compensating Txn
+    Buyer->>Server: checkout (Shaky Card, Idempotency: key-1)
+    Server->>Store: Reserve Inventory
+    Server->>Policy: Evaluate (17 rules) -> ALLOW
+    Server->>Ledger: Pre-commit evaluation log
+    Server->>Razorpay: Authorize Payment
+    Razorpay-->>Server: Error: payment_failed_insufficient_funds
+    Server->>Store: COMPENSATING TXN: Release Inventory Reservation
+    Server->>Ledger: Log payment.failed & inventory.released
+    Server-->>Buyer: 402 Decline Error + Suggest Alternative Instrument
+
+    Note over Buyer,Ledger: 4. Attempt 2: Idempotency Protection & UPI Recovery
+    Buyer->>Server: Replay with key-1 (Test double-charge guard)
+    Server-->>Buyer: Cached decline returned (Zero gateway calls)
+    Buyer->>Server: checkout (UPI / Success VPA, Idempotency: key-2)
+    Server->>Policy: Re-evaluate -> ALLOW
+    Server->>Razorpay: Capture Payment
+    Razorpay-->>Server: payment_id (ord_xxx, pay_yyy)
+    Server->>Ledger: mandate.consumed (burn nonce)
+    Server->>Ledger: payment.captured & order.confirmed
+    Server-->>Buyer: Order Confirmation & Receipt
+
+    Note over Buyer,Server: 5. Security Guard: Replay Attack Defense
+    Buyer->>Server: checkout (Replay burnt mandate token)
+    Server->>Policy: Evaluate token nonce
+    Policy-->>Server: DENY: Single-use mandate already spent
+    Server-->>Buyer: 403 Denied
+```
+
 The MCP endpoint (`POST /mcp`, JSON-RPC 2.0) exposes ten tools and runs **the same code
 paths as the human chat UI**, so a shopper and a machine cannot get different treatment
 from the policy engine.
